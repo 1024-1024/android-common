@@ -70,10 +70,12 @@ public class NotificationUtil {
             builder.setAutoCancel(true);
             builder.setContentIntent(pendingIntent);
             Notification baseNF;
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 baseNF = builder.getNotification();
-            } else {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
                 baseNF = builder.build();
+            } else {
+                baseNF = null;
             }
             //发出状态栏通知
             NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
@@ -81,7 +83,7 @@ public class NotificationUtil {
         } else {
             // 创建一个NotificationManager的引用
             NotificationManager notificationManager = (NotificationManager) context
-                    .getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
             // 定义Notification的各种属性
             Notification notification = new Notification(icon, ticker, System.currentTimeMillis());
             notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_SHOW_LIGHTS;
